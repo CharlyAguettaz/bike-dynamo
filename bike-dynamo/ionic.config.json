@@ -1,0 +1,7 @@
+{
+  "name": "bike-dynamo",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
