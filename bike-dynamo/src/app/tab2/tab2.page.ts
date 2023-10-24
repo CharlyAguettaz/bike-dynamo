@@ -9,4 +9,14 @@ export class Tab2Page {
 
   constructor() {}
 
+  ngOnInit(): void {
+    this.createChart();
+  }
+
+  createChart() {
+
+    let element = <HTMLCanvasElement>document.getElementById('myChart')
+    let ctx = element.getContext('2d');
+  }
+
 }
