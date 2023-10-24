@@ -1,7 +1,5 @@
-@import '../../theme/variables.scss';
-
+@import '../../theme/colors.scss';
 .card {
-  background-color: $ion-color-dark;
   padding: 10px 20px 20px 20px;
   display: flex;
   flex-direction: column;
@@ -32,5 +30,25 @@
         column-gap: 10px;
       }
     }
+
+    .badges {
+      display: flex;
+      flex-direction: row;
+      row-gap: 20px;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      align-items: center;
+
+      .badge {
+        flex-basis: 30%;
+      }
+
+      .badge.disable {
+        filter: grayscale(100%);
+        -webkit-filter: grayscale(100%);
+        opacity: 0.5;
+      }
+    }
   }
 }
+
