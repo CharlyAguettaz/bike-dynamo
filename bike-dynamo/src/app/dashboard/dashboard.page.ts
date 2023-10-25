@@ -2,6 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { BatteryInfo, Device } from '@capacitor/device';
 import { Chart, registerables } from 'chart.js';
 import { IonModal, ModalController } from '@ionic/angular';
+import { AssetsService } from '../services/assets.service';
+import { PostLoginResponse } from '../models/response/postLoginResponse';
+import { DynamoApiService } from '../services/dynamo-api.service';
+import { GetFriendsResponse } from '../models/response/getFriendsResponse';
 Chart.register(...registerables);
 
 @Component({
@@ -13,7 +17,7 @@ export class Dashboard implements OnInit {
   @ViewChild(IonModal) modal: IonModal;
 
   public chart: Chart<"doughnut", string[], string>;
-  public remainingTime: any;
+  public remainingTime: any = 0;
   public battery: BatteryInfo = {
     batteryLevel: 0,
     isCharging: false
@@ -23,60 +27,72 @@ export class Dashboard implements OnInit {
     url: string;
     unlocked: boolean;
     description: string;
-  }[] = [
-    { title: 'phone', url: 'assets/badges/phone.svg', unlocked: true, description: 'You have generated the equivalent of a phone battery by bike, this represent approximately 3500mA/h' },
-    { title: 'phone5', url: 'assets/badges/phone5.svg', unlocked: true, description: 'You have generated the equivalent of 5 phone battery by bike, this represent approximately 17500mA/h' },
-    { title: 'phone10', url: 'assets/badges/phone10.svg', unlocked: false, description: 'You have generated the equivalent of 10 phone battery by bike, this represent approximately 35000mA/h' },
-    { title: 'laptop5', url: 'assets/badges/laptop5.svg', unlocked: true, description: 'You have generated the equivalent of 5 laptop battery by bike, this represent approximately 40000mA/h' },
-    { title: 'laptop10', url: 'assets/badges/laptop10.svg', unlocked: false, description: 'You have generated the equivalent of 10 laptop battery by bike, this represent approximately 80000mA/h' },
-    { title: 'laptop20', url: 'assets/badges/laptop20.svg', unlocked: false, description: 'You have generated the equivalent of 20 laptop battery by bike, this represent approximately 160000mA/h' },
-    { title: 'car', url: 'assets/badges/car.svg', unlocked: false, description: 'You have generated the equivalent to make a full load of a car by bike, this represent approximately 400000mA/h' },
-  ];
+  }[] = AssetsService.getBadges();
 
   public stickers: {
     title: string;
     url: string;
     description: string;
-  }[] = [
-    { title: 'beat-you', url: 'assets/stickers/beat-you.png', description: 'You can send this sticker to every friend that unloacked the same badges as you' },
-    { title: 'catch-you', url: 'assets/stickers/catch-you.png',  description: 'You can send this sticker to every friend that unloacked more badges than you' },
-    { title: 'review-mirror', url: 'assets/stickers/review-mirror.png', description: 'You can send this sticker to every friend that unloacked less badges than you' },
-  ]
+  }[] = AssetsService.getStickers();
 
-  public myProduction = 26000;
+  public user: PostLoginResponse;
 
-  public friends = [
-    { id: 1, name:'Mathieu', production: 15000 },
-    { id: 2, name:'Lucas', production: 20000 },
-    { id: 3, name:'Emma', production: 36000 },
-  ]
+  public targetId: string;
+
+  public friends: GetFriendsResponse[] = [];
+
+  isMessageToastOpen: boolean = false;
 
   constructor(private modalCntrl: ModalController) {}
 
   ngOnInit(): void {
-    this.remainingTime = '0';
+    
+    const userStr = localStorage.getItem('DYNAMO_USER_KEY');
+    if (userStr) {
+      this.user = JSON.parse(userStr);
+      this.unlockProductionStep();
+    } 
     this.setBattery();
+    this.getFriend();
     setInterval(() => this.updateBattery(), 1000);
+  }
+
+  getFriend() {
+    DynamoApiService.getFriends().then((data: GetFriendsResponse[]) => {
+      this.friends = [...data]
+    })
+  }
+
+  sendSticker(stickerId: string) {
+    if (this.targetId) {
+      DynamoApiService.postMessage(this.targetId, stickerId).then(() => {
+        this.setOpen(true);
+      });
+    }
+  }
+
+  setOpen(isOpen: boolean) {
+    this.isMessageToastOpen = isOpen;
   }
 
   isStickerSendable(production: number, sticker: string): boolean {
     switch (sticker) {
       case 'beat-you':
-        if (this.getProductionStep(production) == this.getProductionStep(this.myProduction)) {
+        if (this.getProductionStep(production) == this.getProductionStep(this.user.generatedPower)) {
           return true;
         } else {
           return false;
         }
 
       case 'catch-you':
-        if (this.getProductionStep(production) > this.getProductionStep(this.myProduction)) {
+        if (this.getProductionStep(production) > this.getProductionStep(this.user.generatedPower)) {
           return true;
         } else {
           return false;
         }
 
       case 'review-mirror':
-        if (this.getProductionStep(production) < this.getProductionStep(this.myProduction)) {
+        if (this.getProductionStep(production) < this.getProductionStep(this.user.generatedPower)) {
           return true;
         } else {
           return false;
@@ -85,6 +101,16 @@ export class Dashboard implements OnInit {
       default :
         return false;
     }
+  }
+
+  unlockProductionStep() {
+    let step = this.getProductionStep(this.user.generatedPower);
+    this.badges.forEach((badge) => {
+      if (step > 0) {
+        badge.unlocked = true;
+        step--;
+      }
+    })
   }
 
   getProductionStep(production: number): number {

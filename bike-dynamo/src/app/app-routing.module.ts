@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
@@ -9,8 +10,9 @@ const routes: Routes = [
 ];
 @NgModule({
   imports: [
+    FormsModule,
     RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
   ],
-  exports: [RouterModule]
+  exports: [FormsModule, RouterModule]
 })
 export class AppRoutingModule {}

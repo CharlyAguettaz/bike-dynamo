@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'config.php';
-require_once __DIR__ . DIRECTORY_SEPARATOR . 'response' . DIRECTORY_SEPARATOR . 'LoginResponse.php';
 
 class User
 {
@@ -36,6 +35,18 @@ class User
         ));
 
         $res = $req->fetch(PDO::FETCH_ASSOC);
+        return $res;
+    }
+
+    public function getUser()
+    {
+        $reqStr = "SELECT * FROM {$this->table} WHERE id != :id";
+        $req = $this->connection->prepare($reqStr);
+        $req->execute(array(
+            'id' => $this->id
+        ));
+
+        $res = $req->fetchAll(PDO::FETCH_ASSOC);
         return $res;
     }
 }

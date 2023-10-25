@@ -1,3 +1,33 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-router-outlet *ngIf="isLogged(); else login"></ion-router-outlet>
+  <ng-template #login>
+    <ion-content ngClass="login-content">
+      <ion-img ngClass="login-content__logo" src="assets/Logo.png"></ion-img>
+      <ion-card ngClass="login-content__card">
+        <ion-card-header>
+          <ion-card-title>
+            Login to your account
+          </ion-card-title>
+          <ion-card-subtitle>
+            We are happy to see you again
+          </ion-card-subtitle>
+        </ion-card-header>
+        
+        <ion-card-content ngClass="card-content">
+          <ion-list>
+            <ion-item>
+              <ion-input id="name" [clearInput]="true" [(ngModel)]="name" label="Name" labelPlacement="floating" placeholder="Enter your name"></ion-input>
+            </ion-item>
+            <ion-item>
+              <ion-input type="password" [(ngModel)]="password" label="Password" labelPlacement="floating" placeholder="Enter your password"></ion-input>
+            </ion-item>
+          </ion-list>
+  
+          <div ngClass="card-content__buttons">
+            <ion-button (click)="postLogin()">Log in</ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-content>
+  </ng-template>
 </ion-app>

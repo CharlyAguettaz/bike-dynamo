@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import { PostLoginResponse } from '../models/response/postLoginResponse';
 
 @Component({
   selector: 'app-tab2',
@@ -7,20 +8,14 @@ import {Component, OnInit} from '@angular/core';
 })
 export class Tab2Page implements OnInit {
 
-  carbonEmission: number = 0;
-  generatedPower: number = 0;
-  chargingTime: number = 0;
-  distanceTraveled: number = 0;
-  speed: number = 0;
+  user: PostLoginResponse;
 
   constructor() {}
 
   ngOnInit(): void {
-    this.carbonEmission = 2000;
-    this.generatedPower = 15;
-    this.chargingTime = 35;
-    this.distanceTraveled = 20;
-    this.speed = 19;
+    const userStr = localStorage.getItem('DYNAMO_USER_KEY');
+    if (userStr) {
+      this.user = JSON.parse(userStr);
+    } 
   }
-
 }

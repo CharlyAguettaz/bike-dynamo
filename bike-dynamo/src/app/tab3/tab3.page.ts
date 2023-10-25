@@ -9,4 +9,8 @@ export class Tab3Page {
 
   constructor() {}
 
+  public logout() {
+    localStorage.removeItem('DYNAMO_USER_KEY');
+  }
+
 }

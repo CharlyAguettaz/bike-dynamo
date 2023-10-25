@@ -13,6 +13,12 @@
     </ion-toolbar>
   </ion-header>
 
+  <div ngClass="dashboard-pres">
+    <p>
+      Hi {{ user.name }}, from this dashboard you'll be able to track you're current batterie and the remainig time to a full load with RideNPower.
+    </p>
+  </div>
+
   <ion-card ngClass="card">
     <ion-card-title ngClass="card__title">
       Estimated loading
@@ -34,6 +40,16 @@
       </div>
     </ion-card-content>
   </ion-card>
+
+  <div ngClass="separator-container">
+    <div ngClass="horizontal-separator"></div>
+  </div>
+
+  <div ngClass="dashboard-pres">
+    <p>
+      You will also see you're current achievment unlocked and you should notify you're friend with the contextual stickers
+    </p>
+  </div>
 
   <ion-card ngClass="card">
     <ion-card-title ngClass="card__title">
@@ -96,18 +112,25 @@
         <ion-img ngClass="image" [src]="sticker.url" />
           <ion-card-subtitle>Friends</ion-card-subtitle>
           <ion-item>
-            <ion-select>
+            <ion-select name="targetId" [(ngModel)]="targetId">
               <ng-container *ngFor="let friend of friends">
-                <ion-select-option  *ngIf="isStickerSendable(friend.production, sticker.title)" [value]="friend.id">
+                <ion-select-option *ngIf="isStickerSendable(friend.generatedPower, sticker.title)" [value]="friend.id">
                   {{ friend.name }}
                 </ion-select-option>
               </ng-container>
             </ion-select>
           </ion-item>
-        <ion-button ngClass="button">Send</ion-button>
+        <ion-button (click)="sendSticker(sticker.id)" ngClass="button">Send</ion-button>
       </ion-content>
+      <ion-toast
+        [isOpen]="isMessageToastOpen"
+        message="Message send"
+        [duration]="3000"
+        (didDismiss)="setOpen(false)"
+      ></ion-toast>
     </ng-template>
   </ion-modal>
+  
 </ion-content>
 
 

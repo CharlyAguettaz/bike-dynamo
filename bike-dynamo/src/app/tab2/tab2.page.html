@@ -14,9 +14,20 @@
   </ion-header>
 
   <div class="container">
+
+    <div ngClass="stats-pres">
+      <p>
+        This is you're overall statistics registered with RideNPower.
+      </p>
+      <p>
+        They determine your achievements and allow you to view your progress as well as the positive impact on the environment.
+      </p>
+    </div>
+
     <ion-card>
       <ion-card-header>
-        <ion-card-subtitle>Statistics from your last trip</ion-card-subtitle>
+        <ion-card-title>Stats</ion-card-title>
+        <ion-card-subtitle>Your overall statistics</ion-card-subtitle>
       </ion-card-header>
 
       <ion-card-content>
@@ -24,27 +35,27 @@
           <tr>
             <td><ion-icon name="cloud-outline"></ion-icon></td>
             <td>CO2 économisé</td>
-            <td>{{carbonEmission}}</td>
+            <td>{{user.carbonEmission + 'g'}}</td>
           </tr>
           <tr>
             <td><ion-icon name="flash-outline"></ion-icon></td>
             <td>Puissance généré</td>
-            <td>{{generatedPower}}</td>
+            <td>{{user.generatedPower + 'mA'}}</td>
           </tr>
           <tr>
             <td><ion-icon name="battery-charging-outline"></ion-icon></td>
             <td>Temps de charge</td>
-            <td>{{chargingTime}}</td>
+            <td>{{user.chargingTime + 'h'}}</td>
           </tr>
           <tr>
             <td><ion-icon name="analytics-outline"></ion-icon></td>
             <td>Distance parcourue</td>
-            <td>{{distanceTraveled}}</td>
+            <td>{{user.distanceTraveled + 'km'}}</td>
           </tr>
           <tr>
             <td><ion-icon name="bicycle-outline"></ion-icon></td>
-            <td>km/h</td>
-            <td>{{speed}}</td>
+            <td>speed</td>
+            <td>{{user.speed + 'km/h'}}</td>
           </tr>
         </table>
       </ion-card-content>

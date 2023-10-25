@@ -1,0 +1,31 @@
+
+.login-content {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+
+    &__card {
+        top: 50%;
+        -ms-transform: translateY(-50%);
+        transform: translateY(-50%);
+        padding: 20px 10px;
+
+        .card-content {
+
+            &__buttons {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
+
+    &__logo {
+        left: 50%;
+        -ms-transform: translateX(-50%);
+        transform: translateX(-50%);
+        position: fixed;
+        width: 250px;
+    }
+}
