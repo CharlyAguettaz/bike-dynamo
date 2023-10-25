@@ -40,7 +40,7 @@ class Message
     {
         if (!empty($this->userId)) {
 
-            $reqStr = "SELECT message.id as id, userId, user.name, user.password, user.carbonEmission, user.generatedPower, user.chargingTime, user.distanceTraveled, user.speed FROM {$this->table} LEFT JOIN user ON userId = user.id WHERE targetId = :userId";
+            $reqStr = "SELECT message.id as id, userId, stickerId, user.name, user.password, user.carbonEmission, user.generatedPower, user.chargingTime, user.distanceTraveled, user.speed FROM {$this->table} LEFT JOIN user ON userId = user.id WHERE targetId = :userId";
             $req = $this->connection->prepare($reqStr);
             $req->execute(array(
                 'userId' => $this->userId
