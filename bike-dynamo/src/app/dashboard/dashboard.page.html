@@ -1,0 +1,113 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Dashboard
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content ngClass="main-content" [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Dashboard</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-card ngClass="card">
+    <ion-card-title ngClass="card__title">
+      Estimated loading
+    </ion-card-title>
+    <ion-card-content ngClass="card__content">
+      <div>
+        <canvas id="myChart">{{ chart }}</canvas>
+      </div>
+      <div ngClass="col">
+        <div ngClass="row">
+          <ion-icon size="large" name="battery-full"></ion-icon><p>Current battery : {{ battery.batteryLevel ? (battery.batteryLevel * 100).toFixed() + '%' : 'Unknow' }}</p>
+        </div>
+        <div ngClass="row">
+          <ion-icon size="large" name="hourglass"></ion-icon>
+          <div *ngIf="battery.isCharging; then plugged else notPlugged"></div>
+        </div>
+        <ng-template #plugged ><p>Remaining time to full charge : {{ remainingTime }}h</p></ng-template>
+        <ng-template #notPlugged><p>You are not plugged to the dynamo</p></ng-template>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card ngClass="card">
+    <ion-card-title ngClass="card__title">
+      Badges
+    </ion-card-title>
+    <ion-card-subtitle>
+      Badges represent what you have accomplished in terms of energy production
+    </ion-card-subtitle>
+    <ion-card-content ngClass="card__content">
+      <div ngClass="badges">
+        <ion-img *ngFor="let badge of badges" [id]="badge.title" [ngClass]="badge.unlocked ? 'badge' : 'badge disable'" [src]="badge.url" />
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card ngClass="card">
+    <ion-card-title ngClass="card__title">
+      Send stickers to your friends
+    </ion-card-title>
+    <ion-card-subtitle>
+      You can send different sticker according what your friend and you achieved
+    </ion-card-subtitle>
+    <ion-card-content ngClass="card__content">
+      <div ngClass="badges">
+        <ion-img *ngFor="let sticker of stickers" [id]="sticker.title" ngClass="badge" [src]="sticker.url" />
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-modal ngClass="modal" *ngFor="let badge of badges" [trigger]="badge.title" [id]="'modal-' + badge.title">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Progress</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="close('modal-' + badge.title)">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding inline-content">
+        <ion-img [ngClass]="badge.unlocked ? 'image' : 'image disable'" [src]="badge.url" />
+        <p [ngClass]="badge.unlocked ? 'unlocked' : 'locked'">{{ badge.unlocked ? 'Unlocked' : 'Locked' }}</p>
+        {{ badge.description }}
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal *ngFor="let sticker of stickers" [trigger]="sticker.title" [id]="'modal-' + sticker.title">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Send a sticker</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="close('modal-' + sticker.title)">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding inline-content">
+        <p>{{ sticker.description }}</p>
+        <ion-img ngClass="image" [src]="sticker.url" />
+          <ion-card-subtitle>Friends</ion-card-subtitle>
+          <ion-item>
+            <ion-select>
+              <ng-container *ngFor="let friend of friends">
+                <ion-select-option  *ngIf="isStickerSendable(friend.production, sticker.title)" [value]="friend.id">
+                  {{ friend.name }}
+                </ion-select-option>
+              </ng-container>
+            </ion-select>
+          </ion-item>
+        <ion-button ngClass="button">Send</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>
+
+
