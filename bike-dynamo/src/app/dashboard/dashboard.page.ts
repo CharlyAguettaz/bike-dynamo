@@ -36,12 +36,11 @@ export class Dashboard implements OnInit {
   public stickers: {
     title: string;
     url: string;
-    canSendTo: string;
     description: string;
   }[] = [
-    { title: 'beat-you', url: 'assets/stickers/beat-you.png', canSendTo: 'all', description: 'You can send this sticker to every friend that unloacked the same badges as you' },
-    { title: 'catch-you', url: 'assets/stickers/catch-you.png', canSendTo: 'all', description: 'You can send this sticker to every friend that unloacked more badges than you' },
-    { title: 'review-mirror', url: 'assets/stickers/review-mirror.png', canSendTo: 'all', description: 'You can send this sticker to every friend that unloacked less badges than you' },
+    { title: 'beat-you', url: 'assets/stickers/beat-you.png', description: 'You can send this sticker to every friend that unloacked the same badges as you' },
+    { title: 'catch-you', url: 'assets/stickers/catch-you.png',  description: 'You can send this sticker to every friend that unloacked more badges than you' },
+    { title: 'review-mirror', url: 'assets/stickers/review-mirror.png', description: 'You can send this sticker to every friend that unloacked less badges than you' },
   ]
 
   public myProduction = 26000;
@@ -62,7 +61,7 @@ export class Dashboard implements OnInit {
 
   isStickerSendable(production: number, sticker: string): boolean {
     switch (sticker) {
-      case 'beat-you': 
+      case 'beat-you':
         if (this.getProductionStep(production) == this.getProductionStep(this.myProduction)) {
           return true;
         } else {
@@ -83,7 +82,7 @@ export class Dashboard implements OnInit {
           return false;
         }
 
-      default : 
+      default :
         return false;
     }
   }
