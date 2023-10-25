@@ -44,7 +44,7 @@
     </ion-card-subtitle>
     <ion-card-content ngClass="card__content">
       <div ngClass="badges">
-        <ion-img *ngFor="let badge of badges" [ngClass]="badge.unlocked ? 'badge' : 'badge disable'" [src]="badge.url" />
+        <ion-img *ngFor="let badge of badges" [id]="badge.title" [ngClass]="badge.unlocked ? 'badge' : 'badge disable'" [src]="badge.url" />
       </div>
     </ion-card-content>
   </ion-card>
@@ -58,8 +58,56 @@
     </ion-card-subtitle>
     <ion-card-content ngClass="card__content">
       <div ngClass="badges">
-        <ion-img *ngFor="let sticker of stickers" ngClass="badge" [src]="sticker.url" />
+        <ion-img *ngFor="let sticker of stickers" [id]="sticker.title" ngClass="badge" [src]="sticker.url" />
       </div>
     </ion-card-content>
   </ion-card>
+
+  <ion-modal ngClass="modal" *ngFor="let badge of badges" [trigger]="badge.title" [id]="'modal-' + badge.title">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Progress</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="close('modal-' + badge.title)">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding inline-content">
+        <ion-img [ngClass]="badge.unlocked ? 'image' : 'image disable'" [src]="badge.url" />
+        <p [ngClass]="badge.unlocked ? 'unlocked' : 'locked'">{{ badge.unlocked ? 'Unlocked' : 'Locked' }}</p>
+        {{ badge.description }}
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <ion-modal *ngFor="let sticker of stickers" [trigger]="sticker.title" [id]="'modal-' + sticker.title">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Send a sticker</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="close('modal-' + sticker.title)">Close</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding inline-content">
+        <p>{{ sticker.description }}</p>
+        <ion-img ngClass="image" [src]="sticker.url" />
+          <ion-card-subtitle>Friends</ion-card-subtitle>
+          <ion-item>
+            <ion-select>
+              <ng-container *ngFor="let friend of friends">
+                <ion-select-option  *ngIf="isStickerSendable(friend.production, sticker.title)" [value]="friend.id">
+                  {{ friend.name }}
+                </ion-select-option>
+              </ng-container>
+            </ion-select>
+          </ion-item>
+        <ion-button ngClass="button">Send</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
 </ion-content>
+
+
