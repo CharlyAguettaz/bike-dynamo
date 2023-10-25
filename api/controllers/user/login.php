@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'utils' . DIRECTORY_SEPARATOR . 'HeaderUtils.php';
 HeaderUtils::addRequestHeader("POST");
@@ -11,22 +11,20 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
     $user = new User($db->connection);
 
-    if(!empty($_POST['username']) && !empty($_POST['password'])) {
+    if (!empty($_POST['name']) && !empty($_POST['password'])) {
 
-        $user->username = $_POST['username'];
+        $user->name = $_POST['name'];
         $user->password = $_POST['password'];
-        
+
 
         $result = $user->login();
 
         if (!empty($result->token)) {
-            http_response_code(200); 
+            http_response_code(200);
             echo json_encode($result);
         } else {
-            http_response_code(200); 
+            http_response_code(200);
             echo json_encode($result);
         }
     }
 }
-
-
