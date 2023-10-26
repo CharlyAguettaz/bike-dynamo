@@ -23,12 +23,18 @@
     </p>
   </div>
 
-  <ion-accordion-group>
-    <ion-accordion *ngFor="let friend of friends" [value]="friend.id">
-      <ion-item slot="header" color="light">
-        <ion-label>{{ friend.name }}</ion-label>
-      </ion-item>
-      <div class="ion-padding" slot="content">Info</div>
-    </ion-accordion>
-  </ion-accordion-group>
+  <div>
+    <canvas id="friendChart">{{ chart }}</canvas>
+  </div>
+
+  <ion-list>
+    <ion-item *ngFor="let friend of friends; index as i">
+      <ion-button (click)="updateChartData(i)">
+        {{ friend.name }}
+      </ion-button>
+      <div *ngFor="let message of messages">
+        <ion-img ngClass="sticker" *ngIf="isUserMessage(message.userId, friend.id)" [src]="getMessageSticker(message.stickerId)"></ion-img>
+      </div>
+    </ion-item>
+  </ion-list>
 </ion-content>

@@ -15,8 +15,6 @@
 
   <div class="container">
 
-    <ion-img ngClass="background-img" src="assets/icon/cycle.svg"></ion-img>
-
     <ion-card>
       <ion-card-header>
         <ion-card-title>Overall statistics RideNPower.</ion-card-title>
@@ -27,27 +25,27 @@
         <table>
           <tr>
             <td><ion-icon name="cloud-outline"></ion-icon></td>
-            <td>CO2 économisé</td>
+            <td>Saved CO2</td>
             <td>{{user.carbonEmission + 'g'}}</td>
           </tr>
           <tr>
             <td><ion-icon name="flash-outline"></ion-icon></td>
-            <td>Puissance généré</td>
+            <td>Power generated</td>
             <td>{{user.generatedPower + 'mA'}}</td>
           </tr>
           <tr>
             <td><ion-icon name="battery-charging-outline"></ion-icon></td>
-            <td>Temps de charge</td>
+            <td>Charging time</td>
             <td>{{user.chargingTime + 'h'}}</td>
           </tr>
           <tr>
             <td><ion-icon name="analytics-outline"></ion-icon></td>
-            <td>Distance parcourue</td>
+            <td>Traveled distance</td>
             <td>{{user.distanceTraveled + 'km'}}</td>
           </tr>
           <tr>
             <td><ion-icon name="bicycle-outline"></ion-icon></td>
-            <td>speed</td>
+            <td>Speed</td>
             <td>{{user.speed + 'km/h'}}</td>
           </tr>
         </table>
