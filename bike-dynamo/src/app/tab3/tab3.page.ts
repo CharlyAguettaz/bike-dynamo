@@ -32,10 +32,34 @@ export class Tab3Page implements OnInit {
   }
 
   updateChartData(i: number) {
-    if (this.chart.data.datasets.length > 1) this.chart.data.datasets.pop();
+    this.chart.data.datasets = [];
+    
+    this.chart.data.datasets.push({
+      label: 'Your data',
+      data: [
+       this.user.carbonEmission > this.friends[i].carbonEmission ? this.user.carbonEmission / this.user.carbonEmission * 100 : this.user.carbonEmission / this.friends[i].carbonEmission * 100,
+       this.user.generatedPower > this.friends[i].generatedPower ? this.user.generatedPower / this.user.generatedPower * 100 : this.user.generatedPower / this.friends[i].generatedPower * 100 ,
+       this.user.chargingTime > this.friends[i].chargingTime ? this.user.chargingTime / this.user.chargingTime * 100 : this.user.chargingTime / this.friends[i].chargingTime * 100,
+       this.user.distanceTraveled > this.friends[i].distanceTraveled ? this.user.distanceTraveled / this.user.distanceTraveled * 100 : this.user.distanceTraveled / this.friends[i].distanceTraveled * 100,
+       this.user.speed > this.friends[i].speed ? this.user.speed / this.user.speed * 100 : this.user.speed / this.friends[i].speed * 100,
+      ],
+      fill: true,
+      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+      borderColor: 'rgb(255, 99, 132)',
+      pointBackgroundColor: 'rgb(255, 99, 132)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgb(255, 99, 132)'
+    })
     this.chart.data.datasets.push({
       label: this.friends[i].name + ' data',
-      data: [this.friends[i].carbonEmission, this.friends[i].generatedPower / this.user.generatedPower * 100, this.friends[i].chargingTime / this.user.chargingTime * 100, this.friends[i].distanceTraveled, this.friends[i].speed],
+      data: [
+        this.user.carbonEmission > this.friends[i].carbonEmission ? this.friends[i].carbonEmission / this.user.carbonEmission * 100 : this.friends[i].carbonEmission / this.friends[i].carbonEmission * 100,
+        this.user.generatedPower > this.friends[i].generatedPower ? this.friends[i].generatedPower / this.user.generatedPower * 100 : this.friends[i].generatedPower / this.friends[i].generatedPower * 100 ,
+        this.user.chargingTime > this.friends[i].chargingTime ? this.friends[i].chargingTime / this.user.chargingTime * 100 : this.friends[i].chargingTime / this.friends[i].chargingTime * 100,
+        this.user.distanceTraveled > this.friends[i].distanceTraveled ? this.friends[i].distanceTraveled / this.user.distanceTraveled * 100 : this.friends[i].distanceTraveled / this.friends[i].distanceTraveled * 100, 
+        this.user.speed > this.friends[i].speed ? this.friends[i].speed / this.user.speed * 100 : this.friends[i].speed / this.friends[i].speed * 100, 
+      ],
       fill: true,
       backgroundColor: 'rgba(99, 255, 255, 0.2)',
       borderColor: 'rgb(99, 255, 255)',
@@ -75,6 +99,27 @@ export class Tab3Page implements OnInit {
           }]
         },
         options: {
+          scales: {
+            r: {
+              ticks: {
+                display: false
+              },
+              pointLabels: {
+                color: 'white'
+              },
+              angleLines: {
+                color: '#22bb88'
+              },
+              grid: {
+                color: '#22bb8880'
+              }
+            }
+          },
+          plugins: {
+            tooltip: {
+              enabled: false
+            },
+          },
           elements: {
             line: {
               borderWidth: 3

@@ -4,6 +4,8 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  background-image: url('../../assets/wave.svg');
+  background-repeat: no-repeat;
 
   .stats-pres {
     padding: 10px;
@@ -16,6 +18,10 @@
     position: fixed;
     top: 70px;
   }
+}
+
+.vert {
+  color: #22bb88;
 }
 
 td {
